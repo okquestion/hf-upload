@@ -12,6 +12,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"],
     "lib": ["dom", "es2015", "es2016", "es2017"]
   },
-  "include": ["./lib/*", "./node_modules/@types", "./typings"],
   "exclude": ["./node_modules"]
 }

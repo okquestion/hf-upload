@@ -1,36 +1,14 @@
 const path = require('path')
+const merge = require('webpack-merge')
+const commonConfig = require('./webpack.config.common')
 
-module.exports = {
-  mode: 'development',
-  devtool: 'cheap-module-eval-source-map',
+const docsConfig = {
+  mode: 'production',
   entry: './index.tsx',
   output: {
     path: path.resolve('./docs'),
     filename: 'bundle.js'
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js']
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true
-            }
-          },
-          'eslint-loader'
-        ]
-      },
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
   }
 }
+
+module.exports = merge(commonConfig, docsConfig)
