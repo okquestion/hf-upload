@@ -7,11 +7,11 @@ cache:
     - node_modules
 
 install:
-  - npm install
+  - yarn
 
 script:
-  - npm run build
-  - npm run build:docs
+  - yarn run build
+  - yarn run build:docs
 
 branches:
   only:
