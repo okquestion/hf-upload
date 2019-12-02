@@ -8,6 +8,7 @@ cache:
 
 install:
   - yarn
+  - yarn add react react-dom
 
 script:
   - yarn run build
@@ -15,4 +16,4 @@ script:
 
 branches:
   only:
-    - master
+    - dev
