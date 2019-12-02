@@ -1,8 +1,10 @@
-# hf-passports
+# hf-upload
 
-### introduce
+### Introduce
 
 直接将本地文件上传到阿里云
+
+Examples available here:  https://zcued.github.io/hf-upload/example
 
 ### Installation
 
@@ -71,45 +73,45 @@ ReactDOM.render(<Example />, container)
 
 ### Prop Types
 
-| Property     | Type     | Default        | Description                      | required |
-| ------------ | -------- | -------------- | -------------------------------- | -------- |
-| options      | object   | DefaultOptions | Options                          | N        |
-| params       | object   | null           | Params to create OSS             | N        |
-| files        | array    | []             | Initial files                    | N        |
-| onStart      | function |                | Upload start                     | N        |
-| beforeUpload | function |                | Pre-upload operation             | N        |
-| afterUpload  | function |                | Post-upload operation            | N        |
-| onChange     | function |                | Upload status and percent change | N        |
-| onSucceed    | function |                | Single file upload succeeded     | N        |
-| onFailed     | function |                | Single file upload failed        | N        |
-| onComplete   | function |                | All files are uploaded           | N        |
+| Property     | Type     | Default                    | Description                      | required                                        |
+| ------------ | -------- | -------------------------- | -------------------------------- | ----------------------------------------------- |
+| options      | object   | [DefaultOptions](#default) | Options                          | N                                               |
+| params       | object   |                            | Params to create OSS             | N (you can use [updateParams](#method) as well) |
+| files        | array    |                            | Initial files                    | N                                               |
+| onStart      | function |                            | Upload start                     | N                                               |
+| beforeUpload | function |                            | Pre-upload operation             | N                                               |
+| afterUpload  | function |                            | Post-upload operation            | N                                               |
+| onChange     | function |                            | Upload status and percent change | N                                               |
+| onSucceed    | function |                            | Single file upload succeeded     | N                                               |
+| onFailed     | function |                            | Single file upload failed        | N                                               |
+| onComplete   | function |                            | All files are uploaded           | N                                               |
 
-#### DefaultOptions
+#### <span id = "default">DefaultOptions</span>
 
-| Property      | Type   | Default        | Description   |
-| ------------- | ------ | -------------- | ------------- |
-| concurrency   | number | 2              | 最高并发量    |
-| partSize      | number | 500            | 分片大小 (kb) |
-| timeout       | number | 600\*1000ms    | 超时时间      |
-| retryCountMax | number | 3              | 超时重试次数  |
-| errorText     | string | 网络故障请重试 | 错误提示      |
+| Property      | Type   | Default        | Description         |
+| ------------- | ------ | -------------- | ------------------- |
+| concurrency   | number | 2              | Maximum concurrency |
+| partSize      | number | 500            | Part size (kb)      |
+| timeout       | number | 60\*1000       | Overtime time (ms)  |
+| retryCountMax | number | 3              | Retry times out     |
+| errorText     | string | 网络故障请重试 | Error message       |
 
-### Method
+### <span id = "method">Method</span>
 
-- add(files:Array<File>) 添加上传文件
-- abort(uid:string) 暂停正在上传的文件
-- reupload(uid:string) 重新/继续上传
-- delete(uid:string) 删除
-- clear() 清除全部
-- updateParams(params:Params) 更新参数
+- add(files:Array<File>): Add upload file
+- abort(uid:string): Pause files being uploaded
+- reupload(uid:string): Resume / continue upload
+- delete(uid:string): Delete file
+- clear(): Clear all
+- updateParams(params:Params): Update parameters
 
 ### Contributing
 
-1. git clone git@github.com:zcued/hf-upload.git
-2. cd hf-upload && yarn
-3. dev：yarn dev
-4. build：yarn run build
+1. Fork, then clone the project.
+2. Run the project in development mode：$ yarn start.
+3. Make your changes.
+4. Commit and PR.
 
 ### Document
 
-阿里云 SDK 文档：https://help.aliyun.com/document_detail/64041.html?spm=a2c4g.11186623.6.1208.373e5966mqf1Mw
+Ali-oss SDK document：https://help.aliyun.com/document_detail/64041.html?spm=a2c4g.11186623.6.1208.373e5966mqf1Mw
