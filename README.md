@@ -15,10 +15,10 @@ Examples available here:  https://zcued.github.io/hf-upload/example
 ```sh
 import React, { useRef, useEffect } from 'react'
 import ReactDom from 'react-dom'
-import HFUpload from './lib'
+import HFUpload from 'hf-upload'
 
 function Example() {
-  const uploader = useRef<any>(null)
+  const uploader = useRef(null)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function Example() {
     })
   }, [])
 
-  function createUploader(accessInfo: any) {
+  function createUploader(accessInfo) {
     return new HFUpload({
       createOssParams: accessInfo,
 
@@ -41,7 +41,7 @@ function Example() {
     })
   }
 
-  function handleChange(e: any) {
+  function handleChange(e) {
     const postFiles = [...e.target.files]
     uploader.current.add(postFiles)
     e.target.value = null
@@ -98,19 +98,36 @@ ReactDOM.render(<Example />, container)
 
 ### <span id = "method">Method</span>
 
-- add(files:Array<File>): Add upload file
-- abort(uid:string): Pause files being uploaded
-- reupload(uid:string): Resume / continue upload
-- delete(uid:string): Delete file
-- clear(): Clear all
-- updateParams(params:Params): Update parameters
+```javascript
+const uploader = new HfUpload({})
+```
+
+- add(files:Array<File>): add upload file
+  
+  ``` uploader.add(files) ```
+- abort(uid:string): pause files being uploaded
+
+  ``` uploader.abort(uid) ```
+- reupload(uid:string): resume / continue upload
+
+  ``` uploader.reupload(uid) ```
+- delete(uid:string): delete file
+
+  ``` uploader.delete(uid) ```
+- clear(): clear all
+
+  ``` uploader.clear() ```
+- updateParams(params:Params): update parameters
+  
+  ``` uploader.updateParams(params) ```
 
 ### Contributing
 
 1. Fork, then clone the project.
-2. Run the project in development mode：$ yarn start.
-3. Make your changes.
-4. Commit and PR.
+2. Cd hf-upload, then ```yarn``` or ```npm install```.
+3. Run the project in development mode：```yarn start``` or ```npm start```.
+4. Make your changes.
+5. Commit and PR.
 
 ### Document
 
