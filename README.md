@@ -2,13 +2,15 @@
 
 ### Introduce
 
-直接将本地文件上传到阿里云
+将本地文件直接上传到阿里云，分片上传，支持大文件上传
 
 Examples available here:  https://zcued.github.io/hf-upload/example
 
 ### Installation
 
-`npm install hf-uploader --save`
+```npm install hf-uploader --save``` or ```yarn add hf-uploader```
+
+ A [UMD version of hf-upload](https://github.com/zcued/hf-upload/tree/master/dist) as well
 
 ### Example
 
