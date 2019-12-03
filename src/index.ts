@@ -77,6 +77,12 @@ export default class HFUploader {
   // 更新参数
   updateParams = params => {
     this.params = { ...params }
+
+    for (let uid in this.map) {
+      if (this.map[uid]) {
+        this.map[uid].updateParams(params)
+      }
+    }
   }
 
   // 添加

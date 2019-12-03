@@ -96,7 +96,6 @@ export default class Upload {
       progress,
       mime: this.file.mime_type,
       partSize: this.partSize * 1024,
-      checkpoint: this.currentCheckpoint,
       headers: {
         'content-disposition': `attachment; filename="${fileName}"`
       }
@@ -121,7 +120,7 @@ export default class Upload {
               })
               .catch(err => {
                 this.file.status = 'error'
-                this.file.errorMessage = err
+                this.file.errorMessage = this.options.errorText
                 this.onFailed(this.file)
                 reject(err)
               })
@@ -131,15 +130,28 @@ export default class Upload {
           }
         })
         .catch(err => {
+          // 暂停
           if (this.uploadFileClient && this.uploadFileClient.isCancel()) {
             this.file.isBreak = true
             this.onFailed(this.file)
             return
           }
 
-          this.file.status = 'error'
-          // 超时处理
-          if (err.name.toLowerCase().indexOf('connectiontimeout') !== -1) {
+          const error = err.name.toLowerCase()
+          const isParamsExpired =
+            error.indexOf('securitytokenexpirederror') !== -1 ||
+            error.indexOf('invalidaccesskeyiderror') !== -1
+          const isTimeout = error.indexOf('connectiontimeout') !== -1
+
+          // 参数过期
+          if (isParamsExpired) {
+            this.uploadFileClient = null
+            this.startUpload()
+            return
+          }
+
+          // 超时
+          if (isTimeout) {
             if (this.partSize > MIN_PART_SIZE) {
               // 减小分片大小 最小100k
               const size = Math.ceil(this.partSize / 2)
@@ -149,17 +161,24 @@ export default class Upload {
               this.retryCount++
               this.uploadFile('')
             } else {
+              this.file.status = 'error'
               this.file.errorMessage = this.options.errorText
               this.onFailed(this.file)
               reject(err)
             }
-          } else {
-            this.file.errorMessage = this.options.errorText
-            this.onFailed(this.file)
-            reject(err)
+            return
           }
+
+          this.file.status = 'error'
+          this.file.errorMessage = this.options.errorText
+          this.onFailed(this.file)
+          reject(err)
         })
     })
+  }
+
+  updateParams = params => {
+    this.params = { ...params }
   }
 
   startUpload = () => {
@@ -183,6 +202,7 @@ export default class Upload {
 
   reUpload = () => {
     this.retryCount = 0
-    this.uploadFile(this.uploadFileClient)
+    this.uploadFileClient = null
+    this.startUpload()
   }
 }
