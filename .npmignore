@@ -1,5 +1,5 @@
 **/.*
-index.js
+index.tsx
 index.html
 package-lock.json
 yarn.lock
@@ -10,3 +10,4 @@ yarn.lock
 webpack.config.js
 docs
 example
+build

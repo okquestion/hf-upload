@@ -45,7 +45,5 @@ declare namespace HFUploader {
     md5_file?: string
     /** 后缀 */
     extension?: string
-    /** 暂停状态 */
-    isBreak?: boolean
   }
 }

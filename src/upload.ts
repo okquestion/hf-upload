@@ -77,8 +77,7 @@ export default class Upload {
         ...this.file,
         percent: p * 99,
         status: 'uploading',
-        errorMessage: '',
-        isBreak: false
+        errorMessage: ''
       }
       this.onChange(this.file)
     }
@@ -132,8 +131,6 @@ export default class Upload {
         .catch(err => {
           // 暂停
           if (this.uploadFileClient && this.uploadFileClient.isCancel()) {
-            this.file.isBreak = true
-            this.onFailed(this.file)
             return
           }
 

@@ -108,7 +108,9 @@ export default class HFUploader {
     this.queue.clearWithId(uid)
     this.fileList = deleteFile(uid, this.fileList)
     this.ids = deleteId(uid, this.ids)
-    this.onChange && this.onChange({ fileList: this.fileList })
+    if (this.onChange) {
+      this.onChange({ fileList: this.fileList })
+    }
   }
 
   // 清空
@@ -154,7 +156,7 @@ export default class HFUploader {
     files.forEach(f => {
       // 预处理 计算md5 width height aspect url...
       preproccessFile(f)
-        .then(file => {
+        .then((file: HFUploader.File) => {
           this.handleChange(file)
           const before = this.beforeUpload && this.beforeUpload(file)
           if (before && before.then) {
@@ -180,29 +182,35 @@ export default class HFUploader {
   handleChange = (file: HFUploader.File) => {
     const { fileList, onChange } = this
     this.fileList = updateFileLists(file, fileList)
-    onChange && onChange({ file, fileList })
+    if (onChange) {
+      onChange({ file, fileList })
+    }
   }
 
   handleSucceed = (file: HFUploader.File) => {
     const { fileList, onSucceed, checkComplete } = this
     this.fileList = updateFileLists(file, fileList)
     checkComplete(file.uid)
-    onSucceed && onSucceed({ file, fileList })
+    if (onSucceed) {
+      onSucceed({ file, fileList })
+    }
   }
 
   handleFailed = (file: HFUploader.File) => {
     const { fileList, onFailed, checkComplete } = this
     this.fileList = updateFileLists(file, fileList)
     checkComplete(file.uid)
-    onFailed && onFailed({ file, fileList })
+    if (onFailed) {
+      onFailed({ file, fileList })
+    }
   }
 
   checkComplete = (uid: string) => {
     const { fileList, onComplete } = this
     this.ids.push(uid)
     const dedupeIds = Array.from(new Set(this.ids))
-    if (dedupeIds.length === fileList.length) {
-      onComplete && onComplete({ fileList })
+    if (dedupeIds.length === fileList.length && onComplete) {
+      onComplete({ fileList })
     }
   }
 }

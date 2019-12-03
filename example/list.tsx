@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 
 export default memo(function List({
@@ -12,6 +12,18 @@ export default memo(function List({
   reUpload: Function
   onDelete: Function
 }) {
+  const [isBreak, setIsBreak] = useState(false)
+
+  const handleReupload = uid => {
+    reUpload(uid)
+    setIsBreak(false)
+  }
+
+  const handleAbort = uid => {
+    onAbort(uid)
+    setIsBreak(true)
+  }
+
   const _renderUploadStatus = file => {
     if (file.percent === 100) {
       return <span>上传成功</span>
@@ -32,10 +44,12 @@ export default memo(function List({
         <span
           className="action"
           onClick={
-            file.isBreak ? () => reUpload(file.uid) : () => onAbort(file.uid)
+            isBreak
+              ? () => handleReupload(file.uid)
+              : () => handleAbort(file.uid)
           }
         >
-          {file.isBreak ? '恢复' : '暂停'}
+          {isBreak ? '恢复' : '暂停'}
         </span>
       </>
     )

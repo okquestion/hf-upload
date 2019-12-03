@@ -155,34 +155,36 @@ function md5File(file: HFUploader.File, callback: Function) {
 }
 
 export const preproccessFile = f => {
-  const file: HFUploader.File = fileToObject(f)
+  return new Promise(resolve => {
+    const file: HFUploader.File = fileToObject(f)
 
-  if (!file.md5_file) {
-    md5File(f, md5 => (file.md5_file = md5))
-  }
-
-  if (
-    typeof document === 'undefined' ||
-    typeof window === 'undefined' ||
-    !FileReader ||
-    !File ||
-    !(file.originFile instanceof File) ||
-    file.thumbUrl !== undefined ||
-    file.mime_type.indexOf('image') === -1
-  ) {
-    return Promise.resolve(file)
-  }
-
-  file.thumbUrl = ''
-  getImgPreview(
-    file.originFile,
-    (previewDataUrl, width, height, aspect, value = 1) => {
-      file.thumbUrl = previewDataUrl
-      file.width = width
-      file.height = height
-      file.aspect = aspect
-      file.transform = rotation[value]
+    if (!file.md5_file) {
+      md5File(f, md5 => (file.md5_file = md5))
     }
-  )
-  return Promise.resolve(file)
+
+    if (
+      typeof document === 'undefined' ||
+      typeof window === 'undefined' ||
+      !FileReader ||
+      !File ||
+      !(file.originFile instanceof File) ||
+      file.thumbUrl !== undefined ||
+      file.mime_type.indexOf('image') === -1
+    ) {
+      resolve(file)
+    }
+
+    file.thumbUrl = ''
+    getImgPreview(
+      file.originFile,
+      (previewDataUrl, width, height, aspect, value = 1) => {
+        file.thumbUrl = previewDataUrl
+        file.width = width
+        file.height = height
+        file.aspect = aspect
+        file.transform = rotation[value]
+        resolve(file)
+      }
+    )
+  })
 }
