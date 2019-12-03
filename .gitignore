@@ -14,4 +14,3 @@ yarn.lock
 server/*.js
 *.map
 coverage
-lib
